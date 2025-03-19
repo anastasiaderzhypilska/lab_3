@@ -17,24 +17,22 @@ def invert_binary_tree(tree) -> BinaryTree:
     
     return tree
 
-def print_tree_by_levels(root):
+def print_tree(root, level=0, prefix=""):
     if root is None:
-        print("Дерево порожнє")
         return
     
-    queue = [root]
-    while len(queue) > 0:
-        current = queue[0]
-        queue = queue[1:]
-        
-        print(current.value, end=' ')
-        
-        if current.left is not None:
-            queue.append(current.left)
-        if current.right is not None:
-            queue.append(current.right)
+    print(" " * (level * 4) + prefix + str(root.value))
     
-    print()
+    if root.left or root.right:  
+        if root.left:
+            print_tree(root.left, level + 1, "L--- ")
+        else:
+            print(" " * ((level + 1) * 4) + "L--- None")
+        
+        if root.right:
+            print_tree(root.right, level + 1, "R--- ")
+        else:
+            print(" " * ((level + 1) * 4) + "R--- None")
 
 if __name__ == "__main__":
     root = BinaryTree(1)
@@ -45,10 +43,11 @@ if __name__ == "__main__":
     root.right.left = BinaryTree(6)
     root.right.right = BinaryTree(7)
 
-    print("Початкове дерево по рівнях:")
-    print_tree_by_levels(root)
+    print("Початкове дерево:")
+    print_tree(root)
 
     invert_binary_tree(root)
 
-    print("Інвертоване дерево по рівнях:")
-    print_tree_by_levels(root)
+    print("\nІнвертоване дерево:")
+    print_tree(root)
+
