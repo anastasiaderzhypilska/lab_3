@@ -8,31 +8,22 @@ def invert_binary_tree(tree) -> BinaryTree:
     if tree is None:
         return None
     
-    temp = tree.left
-    tree.left = tree.right
-    tree.right = temp
+    tree.left, tree.right = tree.right, tree.left
     
     invert_binary_tree(tree.left)
     invert_binary_tree(tree.right)
     
     return tree
 
-def print_tree(root, level=0, prefix=""):
-    if root is None:
+def print_tree_vertical(node, prefix="", is_left=True):
+    if node is None:
         return
     
-    print(" " * (level * 4) + prefix + str(root.value))
-    
-    if root.left or root.right:  
-        if root.left:
-            print_tree(root.left, level + 1, "L--- ")
-        else:
-            print(" " * ((level + 1) * 4) + "L--- None")
-        
-        if root.right:
-            print_tree(root.right, level + 1, "R--- ")
-        else:
-            print(" " * ((level + 1) * 4) + "R--- None")
+    print_tree_vertical(node.right, prefix + ("│   " if is_left else "    "), False)
+
+    print(prefix + ("└── " if is_left else "┌── ") + str(node.value))
+
+    print_tree_vertical(node.left, prefix + ("    " if is_left else "│   "), True)
 
 if __name__ == "__main__":
     root = BinaryTree(1)
@@ -44,10 +35,10 @@ if __name__ == "__main__":
     root.right.right = BinaryTree(7)
 
     print("Початкове дерево:")
-    print_tree(root)
+    print_tree_vertical(root)
 
     invert_binary_tree(root)
 
     print("\nІнвертоване дерево:")
-    print_tree(root)
+    print_tree_vertical(root)
 
